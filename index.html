@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Space invaders</title>
+</head>
+
+
+<body onkeydown="onKeyDown(event)" onload="onInitGame()">
+
+    <header>
+        <div class="title-box">
+            <h1>Space invaders</h1>
+        </div>
+    </header>
+
+    <div class="table-container">
+        <table border="1" cellpadding="10">
+            <th class="game-info-panel" colspan="100%">
+                <span class="counter-box"></span>
+                <span class="timer">🕓</span>
+            </th>
+            <tbody class="board"></tbody>
+        </table>
+    </div>
+
+    <div class="modal">
+        <h2></h2>
+        <button onclick="onInitGameRestart()">Reset board</button>
+        <!-- <div class="nextlevel">
+            <span></span>
+            <button onclick="onInitNextLevel()"> Next level</button>
+        </div> -->
+    </div>
+
+    <script src="js/util.js"></script>
+    <script src="js/hero.js"></script>
+    <script src="js/alien.js"></script>
+    <script src="js/game.js"></script>
+</body>
+
+</html>
