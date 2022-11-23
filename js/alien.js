@@ -9,7 +9,7 @@ var gLeftEdgeAlien;
 var gRightEdgeAlien;
 
 
-var gIsAlienFreeze = true;
+var gIsAlienFreeze = false;
 
 function createAliens(board) {
     gAliensTopRowIdx = 1
