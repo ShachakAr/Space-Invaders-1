@@ -1,7 +1,8 @@
 'use strict'
 
 const ALIEN_SPEED = 500
-var gIntervalAliens;
+var gAliensInterval;
+
 
 var gAliensTopRowIdx;
 var gAliensBottomRowIdx;
@@ -9,7 +10,7 @@ var gLeftEdgeAlien;
 var gRightEdgeAlien;
 
 
-var gIsAlienFreeze = false;
+var gIsAlienFreeze;
 
 function createAliens(board) {
     gAliensTopRowIdx = 1

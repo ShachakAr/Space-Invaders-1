@@ -20,15 +20,20 @@ var gGame = {
     movementDirection: 1
 }
 
+var gCandyInterval;
+
 // Called when game loads
 function onInitGame() {
     gBoard = createBoard()
     renderBoard(gBoard)
-    console.log(gBoard)
-    gGame.isOn = true
+    // console.log(gBoard)
     updateScore(0)
-    
-    gIntervalAliens = setInterval(() => {
+
+    gGame.isOn = true
+    gIsAlienFreeze = true
+
+    // Set intervals
+    gAliensInterval = setInterval(() => {
         moveAliens()
     }, ALIEN_SPEED);
 
@@ -78,8 +83,27 @@ function renderBoard(board) {
 function gameEnding(str) {
     console.log('You', str, 'the game')
     gGame.isOn = false
-    clearInterval(gIntervalAliens)
+
+    clearInterval(gAliensInterval)
     clearInterval(gBlinkLaserInterval)
+    // clearInterval(gCandyInterval)
+
+}
+
+function onBtnStart(){
+    const elBtn = document.querySelector('.button-start')
+    const msg = (gGame.isOn) ? 'Restart the invasion' : 'Start the invasion'
+    elBtn.innerText = msg
+
+    // ============================ // 
+    const elContent = document.querySelector('.content')
+    elContent.style.display = 'none'
+
+    const elGameEnd = document.querySelector('.game-end')
+    // innerText
+
+    // ============================ // 
+    onInitGame()
 }
 
 // Returns a new cell object. e.g.: {type: SKY, gameObject: ALIEN}

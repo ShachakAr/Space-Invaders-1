@@ -16,7 +16,29 @@
         <div class="title-box">
             <h1>Space invaders</h1>
         </div>
+        <br>
     </header>
+
+    <div class="game-options">
+        <p class="lvl-select-title">Game settings:</p>
+        <button class="button-start" onclick="onBtnStart()">Start the invasion!</button>
+        <button> Level 1</button>
+        <button> Level 2</button>
+        <button> Level 3</button>
+        <!-- <div class="nextlevel">
+            <span></span>
+            <button onclick="onInitNextLevel()"> Next level</button>
+        </div> -->
+    </div>
+
+    <div class="instructions">
+        <div class="game-end"></div>
+        <div class="content">
+            <span>Press 'n' to explode your missile</span>
+            <span>Press 'x' to lunch a fast lazer</span>
+            <span>Hit the candy to freeze the invaders, and get rappid fire</span>
+        </div>
+    </div>
 
     <div class="table-container">
         <table border="1" cellpadding="10">
@@ -28,14 +50,6 @@
         </table>
     </div>
 
-    <div class="modal">
-        <h2></h2>
-        <button onclick="onInitGameRestart()">Reset board</button>
-        <!-- <div class="nextlevel">
-            <span></span>
-            <button onclick="onInitNextLevel()"> Next level</button>
-        </div> -->
-    </div>
 
     <script src="js/util.js"></script>
     <script src="js/hero.js"></script>

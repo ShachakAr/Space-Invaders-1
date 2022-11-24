@@ -23,9 +23,14 @@ h1 {
     letter-spacing: 0.3rem;
 }
 
+.instructions{
+    border: 1px solid black;
+}
+
 
 .table-container{
     display: flex;
+
 
 }
 
