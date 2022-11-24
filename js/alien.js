@@ -35,15 +35,15 @@ function handleAlienHit(pos) {
     updateCell(pos, null)
 
     // Check victory
-    if (gGame.aliensCount === 0) {
-        gameEnding('Won')
-    }
+    // if (gGame.aliensCount === 0) {
+    //     gameEnding('won')
+    // }
 
 }
 
 // Moving the aliens
 function moveAliens() {
-    if (gIsAlienFreeze) return
+    if (gIsAlienFreeze || !gGame.isOn) return
     // Moving right
     if (gGame.movementDirection > 0) {
         // End of board

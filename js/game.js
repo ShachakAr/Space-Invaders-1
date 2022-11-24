@@ -17,26 +17,39 @@ var gGame = {
     isOn: false,
     aliensCount: 0,
     score: 0,
-    movementDirection: 1
+    movementDirection: 1,
+    isInterval: false
 }
 
 var gCandyInterval;
+var isFirstclick = true
 
 // Called when game loads
 function onInitGame() {
     gBoard = createBoard()
     renderBoard(gBoard)
-    // console.log(gBoard)
     updateScore(0)
-
+    
     gGame.isOn = true
-    gIsAlienFreeze = true
+    gIsAlienFreeze = false
+    setContent()
+    gGame.movementDirection = 1
+    if (!isFirstclick) {
+    
+        gAliensInterval = setInterval(moveAliens, ALIEN_SPEED)
 
-    // Set intervals
-    gAliensInterval = setInterval(() => {
-        moveAliens()
-    }, ALIEN_SPEED);
+    }
+}
 
+function onBtnStart() {
+    const elBtn = document.querySelector('.button-start')
+    const msg = (gGame.isOn) ? 'Restart the invasion' : 'Start the invasion'
+    elBtn.innerText = msg
+    clearInterval(gAliensInterval)
+    clearInterval(gBlinkLaserInterval)
+    gGame.isInterval = false
+    isFirstclick = false
+    onInitGame()
 }
 
 // Create and returns the board with aliens on top, ground at bottom
@@ -87,24 +100,46 @@ function gameEnding(str) {
     clearInterval(gAliensInterval)
     clearInterval(gBlinkLaserInterval)
     // clearInterval(gCandyInterval)
-
+    setContent(str)
 }
 
-function onBtnStart(){
-    const elBtn = document.querySelector('.button-start')
-    const msg = (gGame.isOn) ? 'Restart the invasion' : 'Start the invasion'
-    elBtn.innerText = msg
-
-    // ============================ // 
+function setContent (str){
+    const elContentSpans = document.querySelectorAll('.content span')
     const elContent = document.querySelector('.content')
-    elContent.style.display = 'none'
+    const elInnerText = document.querySelector('.game-end')
+    
+    // Display instructions
+    if (gGame.isOn){
+        // console.log('elContent :>> ', elContentSpans);
+        for (var i = 0; i < elContentSpans.length; i++) {
+            const elSpan = elContentSpans[i]
+            elSpan.style.display = 'inline'
+        } 
+        elContent.classList.remove('won')
+        elContent.classList.remove('lost')
+        elInnerText.innerText = ' '
+        return
 
-    const elGameEnd = document.querySelector('.game-end')
-    // innerText
-
-    // ============================ // 
-    onInitGame()
+        // Display game end msg
+    } else {
+        // Hide spans
+        for (var i = 0; i < elContentSpans.length; i++) {
+            const elSpan = elContentSpans[i]
+            // console.log('elSpan :>> ', elSpan);
+            elSpan.style.display = 'none'
+        }
+    }
+    
+    // Present won\lost game
+    elContent.classList.add(`${str}`)
+    
+    
+    const elMsg = (str === 'won') ? 'You won the game! \nThe aliens are gone!' : 'The invaders concured Earth :('
+    elInnerText.innerText = elMsg 
+         
 }
+
+
 
 // Returns a new cell object. e.g.: {type: SKY, gameObject: ALIEN}
 function createCell(gameObject = null) {

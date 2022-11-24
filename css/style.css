@@ -23,9 +23,44 @@ h1 {
     letter-spacing: 0.3rem;
 }
 
+
+/* ==================== */
+.game-options{
+    /* display:  */
+    border: 1px solid black;
+    height: 60px;
+
+}
+
+.settings{
+    font-size: 1.5rem;
+    margin: auto;
+}
+
+button{
+    margin: 0;
+    cursor:not-allowed;
+
+}
+
+.button-start{
+ cursor: pointer;
+}
+
 .instructions{
+    margin: auto;
+    height: 60px;
+    width: 400px;
     border: 1px solid black;
 }
+
+.lost{
+    background-color: red;
+}
+.won{
+    background-color: green;
+}
+
 
 
 .table-container{
