@@ -10,7 +10,7 @@
 </head>
 
 
-<body onkeydown="onKeyDown(event)" onload="onInitGame()">
+<body onkeyup="onKeyDown(event)" onload="onInitGame()">
 
     <header>
         <div class="title-box">
@@ -22,11 +22,16 @@
     <div class="game-options">
         <div class="settings">Game settings:
             <br>
-            <button class="button-start" onclick="onBtnStart()">Start the invasion!</button>
-            <button> Level 1</button>
-            <button> Level 2</button>
-            <button> Level 3</button>
+            <button class="button-start" onclick="onBtnStart()" role="button">Start the invasion!</button>
+            <button> Last level</button>
+            <button> Next level</button>
         </div>
+    </div>
+
+    <div class="bonus">
+        <div class="lives">lives: <span>💚💚💚</span></div>
+        <div class="rapid-fire">Rapid fire: <span>💨💨💨</span></div>
+        <div class="shild">Shild: <span>🕋🕋🕋</span></div>
     </div>
 
     <div class="instructions">

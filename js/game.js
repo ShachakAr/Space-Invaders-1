@@ -1,11 +1,18 @@
 'use strict'
 
-const HERO = '🗼';
-const ALIEN = '👽';
+const HERO = 'HERO';
+const ALIEN = 'ALIEN';
 const LASER = '🔺';
+const LASER_X = '🔹'
 const SKY = 'SKY'
 const GROUND = 'GROUND'
 const BUNKER = 'BUNKER'
+const ROCK = '🌰'
+
+const HERO_IMG = '<img src="imges/hero.png" />'
+const HERO_SHILD_IMG = '<img src="imges/hero-shild.png" />'
+const ALIEN_IMG = '<img src="imges/alien1.png" />'
+
 
 // Matrix of cell objects. e.g.: {type: SKY, gameObject: ALIEN}
 const BOARD_SIZE = 14;
@@ -18,11 +25,13 @@ var gGame = {
     aliensCount: 0,
     score: 0,
     movementDirection: 1,
-    isInterval: false
+    isInterval: false,
+    isAttackInterval: false
+    
 }
-
+//TODO: add candy and freeze intervals
 var gCandyInterval;
-var isFirstclick = true
+var gIsFirstclick = true
 
 // Called when game loads
 function onInitGame() {
@@ -31,10 +40,14 @@ function onInitGame() {
     updateScore(0)
     
     gGame.isOn = true
+    gGame.rapidFireCount = 3
+    gGame.livesCount = 3
+    gGame.shildsCount = 3
+    gGame.movementDirection = 1
+    console.log('gGame :>> ', gGame);
     gIsAlienFreeze = false
     setContent()
-    gGame.movementDirection = 1
-    if (!isFirstclick) {
+    if (!gIsFirstclick) {
     
         gAliensInterval = setInterval(moveAliens, ALIEN_SPEED)
 
@@ -47,8 +60,11 @@ function onBtnStart() {
     elBtn.innerText = msg
     clearInterval(gAliensInterval)
     clearInterval(gBlinkLaserInterval)
+    clearInterval(gAliensAttackInterval)
+    gLaserPositions.splice(0, 1)
+    gAliensAttacks.splice(0, 1)
     gGame.isInterval = false
-    isFirstclick = false
+    gIsFirstclick = false
     onInitGame()
 }
 
@@ -69,9 +85,6 @@ function renderBoard(board) {
         for (var j = 0; j < board[0].length; j++) {
             const currCell = board[i][j]
 
-            // Creating spesific class name for every cell
-            // var cellClass = getClassNamePos({ i: i, j: j }) + ' '
-
             // Adding cells type
             var cellClass = (currCell.type === SKY) ? 'sky' : 'ground'
 
@@ -79,9 +92,11 @@ function renderBoard(board) {
 
             // Adding game elements
             if (currCell.gameObject === ALIEN) {
-                strHTML += ALIEN
+                var alienImg = 
+                strHTML += ALIEN_IMG
             } else if (currCell.gameObject === HERO) {
-                strHTML += HERO
+                var heroImg = (gHero.isShild) ? HERO_SHILD_IMG : HERO_IMG
+                strHTML += heroImg
             }
 
             strHTML += '\t</td>\n'
@@ -99,6 +114,7 @@ function gameEnding(str) {
 
     clearInterval(gAliensInterval)
     clearInterval(gBlinkLaserInterval)
+    clearInterval(gAliensAttackInterval)
     // clearInterval(gCandyInterval)
     setContent(str)
 }
@@ -140,12 +156,42 @@ function setContent (str){
 }
 
 
+function setLeftAlienIdx() {
+    var leftEdge = BOARD_SIZE - 1
+    for (var i = gAliensBottomRowIdx; i >= gAliensTopRowIdx; i--) {
+        for (var j = BOARD_SIZE - 1; j >= 0; j--) {
+            if (gBoard[i][j].gameObject === ALIEN) {
+                if (j < leftEdge) leftEdge = j
+                if (leftEdge === gLeftEdgeAlien) return
+            }
+        }
+    }
+    console.log('leftEdge :>> ', leftEdge);
+    gLeftEdgeAlien = leftEdge
+}
 
-// Returns a new cell object. e.g.: {type: SKY, gameObject: ALIEN}
-function createCell(gameObject = null) {
-    return {
-        type: SKY,
-        gameObject: gameObject
+function setRightAlienIdx() {
+    var rightEdge = 0
+    for (var i = gAliensBottomRowIdx; i >= gAliensTopRowIdx; i--) {
+        for (var j = 0; j <= BOARD_SIZE - 1; j++) {
+            if (gBoard[i][j].gameObject === ALIEN) {
+                if (j > rightEdge) rightEdge = j
+                if (rightEdge === gRightEdgeAlien) return
+            }
+        }
+    }
+    console.log('rightEdge :>> ', rightEdge);
+    gRightEdgeAlien = rightEdge
+}
+
+function setBottomAlienRow() {
+    for (var i = gAliensBottomRowIdx; i >= gAliensTopRowIdx; i--) {
+        for (var j = 0; j < BOARD_SIZE - 1; j++) {
+            if (gBoard[i][j].gameObject === ALIEN) {
+                return
+            }
+        }
+        gAliensBottomRowIdx--
     }
 }
 
@@ -153,5 +199,13 @@ function createCell(gameObject = null) {
 function updateCell(pos, gameObject = null) {
     gBoard[pos.i][pos.j].gameObject = gameObject;
     var elCell = getElCell(pos);
+    if (gameObject === HERO) {
+        var heroImg= (gHero.isShild) ? eval(HERO  + '_SHILD_IMG')  : eval(HERO +  '_IMG')
+        elCell.innerHTML = heroImg
+        return
+    } else if (gameObject === ALIEN){
+        elCell.innerHTML = ALIEN_IMG || '';
+        return
+    }
     elCell.innerHTML = gameObject || '';
 }

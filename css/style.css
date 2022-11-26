@@ -26,8 +26,9 @@ h1 {
 
 /* ==================== */
 .game-options{
-    /* display:  */
-    border: 1px solid black;
+    display: inline-block;
+    font-family: monospace;
+    /* border: 1px solid black; */
     height: 60px;
 
 }
@@ -37,21 +38,60 @@ h1 {
     margin: auto;
 }
 
+
 button{
-    margin: 0;
-    cursor:not-allowed;
-
-}
-
+  appearance: button;
+  background-color: #1899D6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  box-sizing: border-box;
+  color: black;
+  cursor: pointer;
+  display: inline-block;
+  font-family: din-round,sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .8px;
+  line-height: 15px;
+  margin: 0;
+  outline: none;
+  padding: 5px 5px;
+  /* vertical-align: middle; */
+} 
+   
 .button-start{
  cursor: pointer;
 }
 
+/* ==================== */
+.bonus{
+    padding: 10px;
+
+    display: flex;
+    justify-content: space-evenly;
+    /* border: 1px solid black; */
+
+}
+
+
+
+/* ==================== */
 .instructions{
+    /* border: 1px solid black; */
+    padding: 10px;
     margin: auto;
     height: 60px;
     width: 400px;
-    border: 1px solid black;
+}
+
+.content{
+    font-family: din-round,sans-serif;
+}
+
+.content span{
+    padding: 5px;
+
 }
 
 .lost{
@@ -62,18 +102,21 @@ button{
 }
 
 
+img{
+    display: block;
+    width: 100%;
+    height: 100%
+}
 
 .table-container{
     display: flex;
-
 
 }
 
 table {
     margin: 20px auto;
-    background-color: #bdbdbd;
     border-spacing: 0px;
-    border: 0.6px solid rgb(92, 87, 87)
+    border: 0.6px solid rgb(12, 12, 12);
 }
 
 .game-info-panel {

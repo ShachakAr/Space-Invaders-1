@@ -34,3 +34,8 @@ function updateScore(diff) {
     // Update DOM
     document.querySelector('.counter-box').innerText = `Score: ${gGame.score}`
 }
+
+function getImgName(str){
+    
+
+}

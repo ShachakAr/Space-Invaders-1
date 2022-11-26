@@ -1,8 +1,10 @@
 'use strict'
 
-const ALIEN_SPEED = 500
+const ALIEN_SPEED = 2000
+const ALIEN_ATTACK_SPEED = 1000
 var gAliensInterval;
-
+var gAliensAttackInterval;
+const gAliensAttacks = []
 
 var gAliensTopRowIdx;
 var gAliensBottomRowIdx;
@@ -27,17 +29,17 @@ function createAliens(board) {
 }
 
 function handleAlienHit(pos) {
-    // TODO:  add countAliens function to declare victory
-    console.log('Hit')
+    // console.log('Hit')
 
     updateScore(10)
     gGame.aliensCount--
     updateCell(pos, null)
 
-    // Check victory
-    // if (gGame.aliensCount === 0) {
-    //     gameEnding('won')
-    // }
+    // set edges if needed
+    setRightAlienIdx()
+    setLeftAlienIdx()
+    setBottomAlienRow()
+    if (gLeftEdgeAlien === 13 && gRightEdgeAlien === 0) gameEnding('won')
 
 }
 
@@ -74,6 +76,9 @@ function shiftBoardRight(board, fromI, toI) {
             // Move alien right
             pos.j++
             updateCell(pos, ALIEN)
+            if (i === toI) {
+                if (Math.random() <= 0.1) alienAttack(pos)
+            } 
         }
     }
     gLeftEdgeAlien++
@@ -90,6 +95,9 @@ function shiftBoardLeft(board, fromI, toI) {
             // Move alien down
             pos.j--
             updateCell(pos, ALIEN)
+            if (i === toI) {
+                if (Math.random() <= 0.1) alienAttack(pos)
+            } 
         }
     }
     gLeftEdgeAlien--
@@ -120,4 +128,74 @@ function shiftBoardDown(board, fromI, toI) {
     gAliensBottomRowIdx++
     gAliensTopRowIdx++
     gGame.movementDirection *= -1
+}
+
+
+function alienAttack (pos){
+    console.log('Alien attack')
+    // Show rock
+    pos.i++
+    updateCell(pos, ROCK)
+    
+    // Add rock to array
+    gAliensAttacks.push(pos)
+
+    if (!gGame.isAttackInterval) {
+        gGame.isAttackInterval = true
+        // Move rocks
+        gAliensAttackInterval = setInterval(() => {
+            for (var i = 0; i < gAliensAttacks.length; i++){
+                // if the first rock hit something
+                if (gAliensAttacks[0] === null){
+                    gAliensAttacks.splice(0, 1)
+                    if (gAliensAttacks.length === 0) {
+                        clearInterval(gAliensAttackInterval)
+                        gGame.isAttackInterval = false
+                        return
+                    } else {
+                        i--
+                        continue
+                    }
+                }
+                blinkAttack(i)
+            }
+            
+        }, ALIEN_ATTACK_SPEED);
+    }
+
+
+}
+
+function blinkAttack (idx){
+
+    const currAlienRock = gAliensAttacks[idx]
+    const nextCellContent = gBoard[currAlienRock.i + 1][currAlienRock.j]
+    // Remove rock
+    updateCell(currAlienRock, null)
+    
+    // Next cell is empty
+    if (nextCellContent.gameObject === null){
+        if (nextCellContent.type === GROUND){
+            gAliensAttacks.splice(idx, 1, null)
+            return
+        }
+        // Show rock
+        currAlienRock.i++
+        updateCell(currAlienRock, ROCK)
+        return
+    } 
+    // Next cell has gameObject
+    else if (nextCellContent.gameObject === HERO){
+        handleHeroHit()
+    } else if (nextCellContent.gameObject === BUNKER){
+        handleBunkerHit()  
+    }
+    // Only optinos left is LASER, and the rock vanish
+    gAliensAttacks.splice(idx, 1, null)
+
+
+}
+
+function handleBunkerHit (){
+    console.log('hi')
 }
